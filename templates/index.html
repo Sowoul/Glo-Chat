@@ -3,10 +3,10 @@
   <head>
     <script src="https://cdn.socket.io/4.3.1/socket.io.min.js"></script>
 
-    <title>Glo-Chat</title>
+    <title>Chat App</title>
     <style>
       body {
-        background-color: #111b21;
+        background-color: #33334f;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -28,7 +28,7 @@
         border: 1px solid #202c33;
         overflow-y: auto;
         overflow-x: auto;
-        background-image: url("https://i.postimg.cc/t4pV1BgK/bg.jpg");
+        background-image: url("https://i.postimg.cc/rwwkS2q7/bg.jpg");
         background-size: cover;
       }
       .chatbox::-webkit-scrollbar {
@@ -41,8 +41,8 @@
       }
 
       .chatbox::-webkit-scrollbar-thumb {
-        background-color: #3eeb95;
-        border-radius: 100px;
+        background-image: linear-gradient(to bottom, #727de7, #9b71e8);
+        border-radius: 10px;
       }
       .chatbox::-webkit-scrollbar-thumb:hover {
         background-color: #2da86a;
@@ -51,7 +51,7 @@
 
       .message {
         transition: transform 0.2s, opacity 0.2s 0.1s;
-        background-color: #005c4b;
+
         border-radius: 20px 20px 0 20px;
         padding: 15px;
         margin-bottom: 5px;
@@ -66,16 +66,19 @@
       }
 
       .message.shrink {
-        transform: scale(0.9);
+        transform: scale(0.9) !important;
         opacity: 0.7;
+        transition: transform 0.2s, opacity 0.2s;
       }
 
       .user-message {
+        background-image: linear-gradient(to right, #727de7, #9b71e8);
         align-self: flex-end;
       }
 
       .user-message:hover {
-        background-color: #007a62 !important;
+        background-image: linear-gradient(to right, #727de7, #9b71e8);
+
         transform: scale(1.2);
         border-radius: 20px !important;
         transform-origin: right;
@@ -84,13 +87,14 @@
       }
 
       .other-message {
+        transform-origin: left;
         border-radius: 0 20px 20px 20px;
         align-self: flex-start;
-        background-color: #202c33;
+        background-color: #46466a !important;
       }
 
       .other-message:hover {
-        background-color: #495c66 !important;
+        background-color: #505077 !important;
         border-radius: 20px !important;
         transform: scale(1.2) !important;
         transform-origin: left;
@@ -113,13 +117,13 @@
         flex-grow: 0;
       }
       .message.push {
-        transition: transform 0.2s;
+        transition: transform 0.2s !important;
       }
       .message.push.up {
-        transform: translateY(-10px);
+        transform: translateY(-10px) !important;
       }
       .message.push.down {
-        transform: translateY(10px);
+        transform: translateY(10px) !important;
       }
 
       .input {
@@ -127,16 +131,20 @@
         height: 28px;
         padding: 8px;
         padding-left: 25px;
-        background-color: #2a3942;
+        background-color: #46466a;
         color: #ffffff;
-        border: 2px solid #202c33;
+        border: 2px solid #313149;
         border-radius: 100px;
         outline: none;
         font-size: 16px;
         transition: transform 0.2s;
       }
+
       .input:focus {
-        border: 2px solid #00d5b2;
+        background: linear-gradient(#363854, #363854) padding-box,
+          linear-gradient(to right, #727de7, #9b71e8) border-box;
+        border-radius: 100px;
+        border: 2px solid transparent;
       }
       .input:hover {
         transform: scale(1.005);
@@ -147,7 +155,11 @@
         padding: 8px;
         padding-left: 18px;
         padding-right: 18px;
-        border: 2px solid #00d5b2;
+        background: linear-gradient(#46466a, #46466a) padding-box,
+          linear-gradient(to right, #727de7, #9b71e8) border-box;
+        border-radius: 100px;
+        border: 2px solid transparent;
+
         cursor: pointer;
         border-radius: 90px;
         transition: transform 0.2s;
@@ -158,6 +170,11 @@
         color: #005c4b;
       }
       .button:hover {
+        background: linear-gradient(#363854, #363854) padding-box,
+          linear-gradient(to right, #727de7, #9b71e8) border-box;
+        border-radius: 100px;
+        border: 2px solid transparent;
+
         transform: scale(1.17);
       }
     </style>
@@ -174,7 +191,7 @@
       <button id="send" class="button"><b> > </b></button>
     </div>
     <script>
-      const socket = io("http://localhost:5000/");
+      const socket = io("http://localhost:5000");
       const chatbox = document.getElementById("chatbox");
       const input = document.getElementById("input");
       const sendButton = document.getElementById("send");
@@ -194,8 +211,8 @@
       function sendMessage() {
         const message = input.value;
         input.value = "";
-        socket.emit("message", message); 
-        renderMessage(message, true); 
+        socket.emit("message", message); // Emit the "message" event with the message data
+        renderMessage(message, true); // Pass true as the second argument to indicate user's message
       }
 
       function renderMessage(message, isUserMessage) {
@@ -204,8 +221,10 @@
           `.message[data-message="${message}"]`
         );
         if (existingMessage) {
+          // If the message has already been rendered, just update the timestamp
           existingMessage.textContent = message;
         } else {
+          // If the message has not been rendered yet, render it normally
           const messageElement = document.createElement("div");
           messageElement.textContent = message;
           messageElement.className = "message";
@@ -254,3 +273,4 @@
     </script>
   </body>
 </html>
+
