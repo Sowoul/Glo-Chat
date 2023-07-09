@@ -1,5 +1,5 @@
 flask
-flask_socketio==4.2.0
+flask_socketio
 gunicorn
 gevent-websocket
 eventlet
