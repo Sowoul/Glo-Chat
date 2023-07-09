@@ -38,8 +38,7 @@ def disconnect():
 @socketio.on('message')
 def message(data):
     print('Message from', request.sid, ':', data)
-    for client in clients:
-        emit('message', data, room=client)
+    emit('message', data, broadcast=True, include_self=False)
 
 
 if __name__ == '__main__':
