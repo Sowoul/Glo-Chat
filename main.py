@@ -4,7 +4,7 @@ from flask_socketio import SocketIO, emit
 # Create the Flask app
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret_key'
-socketio = SocketIO(app,async_mode='eventlet')
+socketio = SocketIO(app)
 
 # Store connected clients
 clients = []
