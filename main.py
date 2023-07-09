@@ -44,4 +44,4 @@ def message(data):
 
 if __name__ == '__main__':
     # Run the app with SocketIO
-    socketio.run(app, host='0.0.0.0', port=5000,allow_unsafe_werkzeug=True)
+    socketio.run(app, host='0.0.0.0', port=5000,allow_unsafe_werkzeug=True,worker_class='gevent')
